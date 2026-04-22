@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 class Bogie {
@@ -22,17 +23,21 @@ public class Train_Consist_Management_App {
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("First Class", 40));
-        bogies.add(new Bogie("Luxury Coach", 80));
+        bogies.add(new Bogie("AC Chair", 56));
 
-        List<Bogie> filtered = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        Map<String, List<Bogie>> grouped =
+                bogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.name));
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        System.out.println("\nGrouped Bogies:");
 
-        for (Bogie b : filtered) {
-            System.out.println(b.name + " -> " + b.capacity);
+        for (String key : grouped.keySet()) {
+            System.out.println("\n" + key + ":");
+            for (Bogie b : grouped.get(key)) {
+                System.out.println("Capacity -> " + b.capacity);
+            }
         }
     }
 }
