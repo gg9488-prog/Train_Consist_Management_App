@@ -1,19 +1,31 @@
-class InvalidCapacityException extends Exception {
-    InvalidCapacityException(String message) {
+class CargoSafetyException extends RuntimeException {
+    CargoSafetyException(String message) {
         super(message);
     }
 }
 
-class PassengerBogie {
+class GoodsBogie {
     String type;
-    int capacity;
+    String cargo;
 
-    PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
+    GoodsBogie(String type) {
         this.type = type;
-        this.capacity = capacity;
+    }
+
+    public void assignCargo(String cargo) {
+        try {
+            if (type.equals("Rectangular") && cargo.equals("Petroleum")) {
+                throw new CargoSafetyException("Unsafe assignment: Petroleum cannot be loaded in Rectangular bogie");
+            }
+            this.cargo = cargo;
+            System.out.println("Cargo assigned: " + cargo + " -> " + type);
+
+        } catch (CargoSafetyException e) {
+            System.out.println("Error: " + e.getMessage());
+
+        } finally {
+            System.out.println("Assignment attempt completed.\n");
+        }
     }
 }
 
@@ -23,17 +35,13 @@ public class Train_Consist_Management_App {
 
         System.out.println("=== Train Consist Management App ===");
 
-        try {
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            System.out.println("Created: " + b1.type + " -> " + b1.capacity);
+        GoodsBogie b1 = new GoodsBogie("Cylindrical");
+        GoodsBogie b2 = new GoodsBogie("Rectangular");
 
-            PassengerBogie b2 = new PassengerBogie("AC Chair", -10);
-            System.out.println("Created: " + b2.type + " -> " + b2.capacity);
+        b1.assignCargo("Petroleum");
+        b2.assignCargo("Petroleum");
+        b2.assignCargo("Coal");
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        System.out.println("\nProgram continues safely...");
+        System.out.println("Program continues safely...");
     }
 }
