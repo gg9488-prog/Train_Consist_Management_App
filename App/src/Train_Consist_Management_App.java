@@ -1,47 +1,30 @@
-class CargoSafetyException extends RuntimeException {
-    CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-class GoodsBogie {
-    String type;
-    String cargo;
-
-    GoodsBogie(String type) {
-        this.type = type;
-    }
-
-    public void assignCargo(String cargo) {
-        try {
-            if (type.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException("Unsafe assignment: Petroleum cannot be loaded in Rectangular bogie");
-            }
-            this.cargo = cargo;
-            System.out.println("Cargo assigned: " + cargo + " -> " + type);
-
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-
-        } finally {
-            System.out.println("Assignment attempt completed.\n");
-        }
-    }
-}
-
 public class Train_Consist_Management_App {
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        b1.assignCargo("Petroleum");
-        b2.assignCargo("Petroleum");
-        b2.assignCargo("Coal");
+        System.out.println("\nBefore Sorting:");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
 
-        System.out.println("Program continues safely...");
+        for (int i = 0; i < capacities.length - 1; i++) {
+            for (int j = 0; j < capacities.length - i - 1; j++) {
+
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("\n\nAfter Sorting (Ascending Order):");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
     }
 }
