@@ -1,5 +1,5 @@
-import java.util.Scanner;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Train_Consist_Management_App {
 
@@ -7,41 +7,38 @@ public class Train_Consist_Management_App {
 
         System.out.println("=== Train Consist Management App ===");
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        List<String> bogieIds = new ArrayList<>();
 
-        Arrays.sort(bogieIds);
+        String searchKey = "BG101";
 
-        Scanner scanner = new Scanner(System.in);
+        try {
+            searchBogie(bogieIds, searchKey);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        System.out.print("\nEnter Bogie ID to search: ");
-        String key = scanner.nextLine();
+        System.out.println("\nProgram continues safely...");
+    }
 
-        int low = 0;
-        int high = bogieIds.length - 1;
+    public static void searchBogie(List<String> bogieIds, String key) {
+
+        if (bogieIds.isEmpty()) {
+            throw new IllegalStateException("Cannot perform search: Train has no bogies.");
+        }
+
         boolean found = false;
 
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int result = key.compareTo(bogieIds[mid]);
-
-            if (result == 0) {
+        for (String id : bogieIds) {
+            if (id.equals(key)) {
                 found = true;
                 break;
-            } else if (result < 0) {
-                high = mid - 1;
-            } else {
-                low = mid + 1;
             }
         }
 
         if (found) {
-            System.out.println("Bogie ID found: " + key);
+            System.out.println("Bogie found: " + key);
         } else {
-            System.out.println("Bogie ID not found: " + key);
+            System.out.println("Bogie not found: " + key);
         }
-
-        scanner.close();
     }
 }
